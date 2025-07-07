@@ -7,7 +7,7 @@ COLOR_YELLOW = (237, 255, 0)
 ENTITY_SPEED = {
         'level1Bg0': 0,
         'level1Bg1': 2,
-        'level1Bg2': 4,
+        'level1Bg2': 0.9,
         'level1Bg3': 6,
 }
 
