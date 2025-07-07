@@ -1,4 +1,6 @@
 # C
+import pygame
+
 COLOR_GREEN = (72, 150, 44)
 COLOR_WHITE = (255, 255, 255)
 COLOR_YELLOW = (237, 255, 0)
@@ -9,7 +11,10 @@ ENTITY_SPEED = {
         'level1Bg1': 2,
         'level1Bg2': 0.9,
         'level1Bg3': 6,
+        'player': 4,
+        'enemy': 2
 }
+EVENT_ENEMY = pygame.USEREVENT + 1
 
 # M
 MENU_OPTION = ('NEW GAME 1P',
