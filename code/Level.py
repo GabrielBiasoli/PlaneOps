@@ -4,7 +4,7 @@ import pygame.display
 from pygame import Surface, Rect
 from pygame.font import Font
 
-from code.Const import C_WHITE, WIN_HEIGHT, EVENT_ENEMY, C_GREEN, C_YELLOW
+from code.Const import C_WHITE, WIN_HEIGHT, EVENT_ENEMY, C_GREEN, C_YELLOW, EVENT_TIMEOUT, TIMEOUT_STEP, TIMEOUT_LEVEL
 from code.Enemy import Enemy
 from code.Entity import Entity
 from code.EntityFactory import EntityFactory
@@ -13,16 +13,19 @@ from code.Player import Player
 
 
 class Level:
-    def __init__(self, window, name):
+    def __init__(self, window: Surface, name: str, player_score: int):
         self.window = window
         self.name = name
         self.entity_list: list[Entity] = []
         self.entity_list.extend(EntityFactory.get_entity('level1Bg'))
-        self.entity_list.append(EntityFactory.get_entity('player'))
-        self.timeout = 20000
+        player = EntityFactory.get_entity('player')
+        player.score = player_score
+        self.entity_list.append(player)
+        self.timeout = TIMEOUT_LEVEL
         pygame.time.set_timer(EVENT_ENEMY, 2000)
+        pygame.time.set_timer(EVENT_TIMEOUT, TIMEOUT_STEP)
 
-    def run(self):
+    def run(self, player_score: int):
         clock = pygame.time.Clock()
         while True:
             clock.tick(120)
@@ -42,6 +45,11 @@ class Level:
                     sys.exit()
                 if event.type == EVENT_ENEMY:
                     self.entity_list.append(EntityFactory.get_entity('enemy'))
+                if event.type == EVENT_TIMEOUT:
+                    self.timeout -= TIMEOUT_STEP
+                    if self.timeout == 0:
+                        return True
+
 
             self.level_text(50, f'{self.name} - Timeout: {self.timeout / 1000:.1f}s', C_WHITE, (10, 15))
             self.level_text(50, f'fps: {clock.get_fps():.0f}', C_WHITE, (10, WIN_HEIGHT - 90))
